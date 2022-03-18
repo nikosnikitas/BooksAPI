@@ -35,17 +35,17 @@ parser.add_argument('author')
 class Book(Resource):
     def get(self, Book_id):
         abort_if_Book_doesnt_exist(Book_id)
-        return BookS[Book_id]
+        return Books[Book_id]
 
     def delete(self, Book_id):
         abort_if_Book_doesnt_exist(Book_id)
-        del BookS[Book_id]
+        del Books[Book_id]
         return '', 204
 	#puts author in the book
     def put(self, Book_id):
         args = parser.parse_args()
         author = {'author': args['author']}
-        BookS[Book_id] = author
+        Books[Book_id] = author
         return author, 201
 
 
@@ -53,14 +53,14 @@ class Book(Resource):
 # shows a list of all Books, and lets you POST to add new authors
 class BookList(Resource):
     def get(self):
-        return BookS
+        return Books
 
     def post(self):
         args = parser.parse_args()
-        Book_id = int(max(BookS.keys()).lstrip('Book')) + 1
+        Book_id = int(max(Books.keys()).lstrip('Book')) + 1
         Book_id = 'Book%i' % Book_id
-        BookS[Book_id] = {'author': args['author']}
-        return BookS[Book_id], 201
+        Books[Book_id] = {'author': args['author']}
+        return Books[Book_id], 201
 
 # API Setup here
 api.add_resource(BookList, '/Books')
